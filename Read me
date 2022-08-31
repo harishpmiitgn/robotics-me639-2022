@@ -1,0 +1,23 @@
+**********************************************************
+
+Copy in vs code and Just Hit Run all codes are independent of each other. Output animation will start.
+
+******************************************************************
+
+Just copy code in vscode and hit run to see the output. For task 1a uncomment first animate and comment animate for 1b. By default 1b runs. Other tasks direct run the code. All files are self-sufficient. Each task in separate file.
+
+Task 1a:
+Inverse Kinematics Equation used
+
+Task 1b: 
+Desired Torque substituted back into dynamics
+
+Task 2:
+Reach point using dynamics then apply constant torque using static equation. Torque value printed on screen.
+
+Task 3:
+Control law is chosen such that desired resultant dynamics is
+qdoubledot = k delq where delq corresponds inversekinematic solution of delx.
+
+Task 4:
+Workspace plot will pop when you run.
