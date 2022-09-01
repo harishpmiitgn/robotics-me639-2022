@@ -4,7 +4,7 @@ This branch contains assignment and project submissions by Souritra Garai (18110
 
 ## Assignment 1
 
-Find the pdf file here
+Find the pdf file here - [Link to file](https://github.com/Souritra-Garai/robotics-me639-2022/blob/Souritra/assignment-1/ME%20639%20Assignment%201%2018110166.pdf)
 
 ## Miniproject
 
