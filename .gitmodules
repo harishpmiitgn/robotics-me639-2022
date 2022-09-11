@@ -1,0 +1,3 @@
+[submodule "elbow-manipulator"]
+	path = elbow-manipulator
+	url = https://github.com/Souritra-Garai/elbow-manipulator.git
