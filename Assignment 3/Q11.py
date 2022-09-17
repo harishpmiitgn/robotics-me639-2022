@@ -25,7 +25,7 @@ C=[0]*n
 for k in range(n):
     for i in range(n):
         for j in range(n):
-            C[k]+=0.5*(sympy.diff(D[k][j], "q"+str(i))+sympy.diff(D[k][i], "q"+str(j))+sympy.diff(D[i][j], "q"+str(k)))*sympy.Symbol("q"+str(i))*sympy.Symbol("q"+str(j))
+            C[k]+=0.5*(sympy.diff(D[k][j], "q"+str(i+1))+sympy.diff(D[k][i], "q"+str(j+1))+sympy.diff(D[i][j], "q"+str(k+1)))*sympy.Symbol("q"+str(i+1))*sympy.Symbol("q"+str(j+1))
 EL=D@q_dot_dot+phi+numpy.transpose([C])
 for i in range(len(EL)):
     print(EL[i][0],end="")
