@@ -34,4 +34,4 @@ Team Osake Brewers
 - Souritra
 - Sunil
 
-ReadMe file for this project - 
+ReadMe file for this project - [link](https://github.com/Souritra-Garai/robotics-me639-2022/blob/Souritra/midsem-OSAKE-I/README.md)
