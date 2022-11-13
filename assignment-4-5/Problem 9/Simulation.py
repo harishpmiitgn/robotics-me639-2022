@@ -86,9 +86,7 @@ def update_anim(i) :
 		q_d,
 		q_d_dot
 	)
-
-	print(q_d, StanfordRobot.q)
-
+	
 	drawRobot()
 	
 	return link_xy, link_xz, end_effector_xz, end_effector_xy
