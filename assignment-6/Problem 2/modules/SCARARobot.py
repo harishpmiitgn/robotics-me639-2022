@@ -1,5 +1,4 @@
 import numpy as np
-import modules.Robot as Robot
 
 # D-H Parameters
 # theta	d		a	 alpha
@@ -10,12 +9,6 @@ import modules.Robot as Robot
 # Dynamics of links # 1 2 3
 m = np.array([0.8, 0.8, 0.8]) 	# kg
 l = np.array([0.25, 0.25, 0.25])	# m
-
-SCARA = Robot.Robot([
-	Robot.RevoluteJoint(l[0], 0, 0),
-	Robot.RevoluteJoint(l[1], 0, np.pi/2),
-	Robot.PrismaticJoint(0, 0, 0)
-])
 
 q		= np.zeros(3)
 q_dot	= np.zeros(3)
@@ -70,6 +63,35 @@ def getEndEffectorPosition(q:np.ndarray) -> np.ndarray :
 		- q[2]
 	])
 
+def getJacobian(q:np.ndarray) -> np.ndarray :
+
+	J = np.zeros((6, 3))
+
+	J[0, 0] = -l[0] * np.sin(q[0]) - l[1] * np.sin(q[0] + q[1])
+	J[1, 0] =  l[0] * np.cos(q[0]) + l[1] * np.cos(q[0] + q[1])
+
+	J[0, 1] = -l[1] * np.sin(q[0] + q[1])
+	J[1, 1] =  l[1] * np.cos(q[0] + q[1])
+
+	J[2, 2] = 1
+	J[5, 0] = 1
+	J[5, 1] = 1
+
+	return J
+
+def getEndEffectorVelocity(q:np.ndarray, q_dot:np.ndarray) -> np.ndarray :
+
+	return np.matmul(getJacobian(q), q_dot)
+
+def getJointStateVelocity(q:np.ndarray, vel:np.ndarray) -> np.ndarray :
+
+	J = getJacobian(q)
+
+	return np.matmul(
+		np.linalg.inv(np.matmul(J.T, J)),
+		np.matmul(J.T, vel)
+	)
+
 def getLink3OtherEnd(end_effector_position:np.ndarray) :
 
 	return end_effector_position + [0, 0, l[2]]
@@ -88,7 +110,7 @@ def getRandomJointState() ->  np.ndarray:
 
 	return [-np.pi, -np.pi, 0] + np.random.random(3) * [np.pi, np.pi, l[2]]
 
-def inverse_kinematics(coordinates_array) -> np.ndarray :
+def inverseKinematics(coordinates_array) -> np.ndarray :
 
 	x, y, z = coordinates_array
 

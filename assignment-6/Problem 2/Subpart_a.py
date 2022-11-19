@@ -10,11 +10,11 @@ point_D = np.array([0.25, 0.075, 0.1])
 
 def verify_point_in_workspace(point) :
 
-	joint_state = SCARA.inverse_kinematics(point)
+	joint_state = SCARA.inverseKinematics(point)
 
 	print('Workspace Coordinate (m, m, m):\t', point)
 	print('Joint State (rad, rad, m):\t', np.round(joint_state, 2))
-	print('Forward Kinematics (m, m, ):\t', SCARA.getEndEffectorPosition(joint_state))
+	print('Forward Kinematics (m, m, m):\t', SCARA.getEndEffectorPosition(joint_state))
 
 # Point A
 print('Point A')
