@@ -12,7 +12,7 @@ m = np.array([0.2, 0.2, 0.2]) 	# kg
 l = np.array([0.4, 0.4, 0.4])	# m
 
 PUMA = Robot.Robot([
-	Robot.RevoluteJoint(l[0], 0, np.pi/2),
+	Robot.RevoluteJoint(0, 0, np.pi/2),
 	Robot.RevoluteJoint(l[1], 0, 0),
 	Robot.RevoluteJoint(l[2], 0,-np.pi/2)
 ])
@@ -52,7 +52,7 @@ def getLinkEnds(q:np.ndarray) -> np.ndarray :
 	x2 = np.matmul(T1, [0, 0, 0, 1])[:3]
 	x3 = np.matmul(T2, [0, 0, 0, 1])[:3]
 
-	return np.column_stack((np.zeros(3), x1, x2, x3))
+	return np.column_stack(([0, 0, -l[0]], x1, x2, x3))
 
 def getRandomJointState() ->  np.ndarray:
 
