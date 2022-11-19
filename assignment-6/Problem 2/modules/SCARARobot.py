@@ -85,12 +85,9 @@ def getEndEffectorVelocity(q:np.ndarray, q_dot:np.ndarray) -> np.ndarray :
 
 def getJointStateVelocity(q:np.ndarray, vel:np.ndarray) -> np.ndarray :
 
-	J = getJacobian(q)
+	J = getJacobian(q)[:3, :]
 
-	return np.matmul(
-		np.linalg.inv(np.matmul(J.T, J)),
-		np.matmul(J.T, vel)
-	)
+	return np.linalg.solve(J, vel)
 
 def getLink3OtherEnd(end_effector_position:np.ndarray) :
 

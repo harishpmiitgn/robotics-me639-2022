@@ -1,3 +1,12 @@
+# Controller code is situated in modules
+# The implementation is slightly different from
+# textbook multivariable control.
+# The controller applies torque to accelerate
+# the joints from current velocity
+# to that required at time t + time_step
+# (where time_step is inverse of controller frequency),
+# with some added proportional control on position error
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,18 +15,18 @@ from matplotlib.animation import FuncAnimation
 import modules.SCARARobot as Robot
 import modules.Controller as Controller
 
+from Subpart_b import getDesiredJointState, getDesiredJointVelocity, drawSquare
+
 # Time in s
 t = 0
 
 # initial state
-q_i		= Robot.getRandomJointState()
-q_i_dot	= np.zeros(3)
+q_i		= getDesiredJointState(0)
+q_i_dot	= getDesiredJointVelocity(0)
 
 # Desired state
-q_d		= Robot.getRandomJointState()
-q_d_dot	= np.zeros(3)
-
-desired_end_effector_position = Robot.getEndEffectorPosition(q_d)
+q_d		= getDesiredJointState(0)
+q_d_dot	= getDesiredJointVelocity(0 + Controller.time_step)
 
 # Matplotlib objects
 figure1 = plt.figure(figsize=[4, 9])
@@ -37,14 +46,12 @@ link3_xz, = axes_xz.plot([], [])
 end_effector_xy, = axes_xy.plot([], [], 'o')
 end_effector_xz, = axes_xz.plot([], [], 'o')
 
-# Desired Position
-axes_xy.plot(desired_end_effector_position[0], desired_end_effector_position[1], 'o')
-axes_xz.plot(desired_end_effector_position[0], desired_end_effector_position[2], 'o')
+drawSquare(axes_xy)
 
-axes_xy.set_xlim([-1, 1])
-axes_xy.set_ylim([-1, 1])
-axes_xz.set_xlim([-1, 1])
-axes_xz.set_ylim([-1, 1])
+axes_xy.set_xlim([-0.5, 0.5])
+axes_xy.set_ylim([-0.5, 0.5])
+axes_xz.set_xlim([-0.5, 0.5])
+axes_xz.set_ylim([-0.5, 0.5])
 
 # Draw Robot
 def drawRobot() :
@@ -71,11 +78,6 @@ def init_anim() :
 	Robot.q		= q_i
 	Robot.q_dot	= q_i_dot
 
-	Controller.error			= np.zeros_like(Robot.q)
-	Controller.error_previous	= np.zeros_like(Robot.q)
-	Controller.integral_error	= np.zeros_like(Robot.q)
-	Controller.derivative_error	= np.zeros_like(Robot.q_dot)
-
 	drawRobot()
 
 	return link3_xy, link3_xz, end_effector_xz, end_effector_xy, link12_xz, link12_xy
@@ -83,6 +85,9 @@ def init_anim() :
 def update_anim(i) :
 	
 	global t
+
+	q_d		= getDesiredJointState(t)
+	q_d_dot = getDesiredJointVelocity(t + Controller.time_step)
 
 	t = Controller.proceedTimeStep(
 		t,
@@ -96,6 +101,6 @@ def update_anim(i) :
 	
 	return link3_xy, link3_xz, end_effector_xz, end_effector_xy, link12_xz, link12_xy
 
-animation = FuncAnimation(figure1, update_anim, 1000, init_anim)
+animation = FuncAnimation(figure1, update_anim, 1000, init_anim, interval=10)
 
 plt.show()

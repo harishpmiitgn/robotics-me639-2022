@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from modules.Trajectory import getCubicTrajectory
-from modules.SCARARobot import inverseKinematics, getJointStateVelocity, getEndEffectorPosition
+from modules.SCARARobot import inverseKinematics, getJointStateVelocity, getEndEffectorPosition, l
 
 Dt = 1 # s
 
@@ -18,10 +18,10 @@ time_C = 2 * Dt # s
 time_D = 3 * Dt # s
 time_A = 4 * Dt # s
 
-point_A = np.array([0.4,  0.06, 0.1])
-point_B = np.array([0.4,  0.01, 0.1])
-point_C = np.array([0.35, 0.01, 0.1])
-point_D = np.array([0.35, 0.06, 0.1])
+point_A = np.array([0.4,  0.06, 0.1 - l[0]]) # The -ve offset along z
+point_B = np.array([0.4,  0.01, 0.1 - l[0]]) # is due to the base frame
+point_C = np.array([0.35, 0.01, 0.1 - l[0]]) # origin situated at the
+point_D = np.array([0.35, 0.06, 0.1 - l[0]]) # 1st revolute joint
 
 coefficients = np.zeros((4, 4, 3))
 
@@ -60,6 +60,13 @@ def getDesiredJointVelocity(t) :
 
 	return getJointStateVelocity(getDesiredJointState(t), getDesiredVelocity(t))
 
+def drawSquare(axes:plt.Axes) :
+	
+	points = np.column_stack((point_A, point_B, point_C, point_D, point_A))
+	axes.plot(points[0], points[1])
+
+	pass
+
 if __name__=='__main__' :
 
 	from matplotlib.animation import FuncAnimation
@@ -90,8 +97,7 @@ if __name__=='__main__' :
 
 		return desired_position,
 
-	points = np.column_stack((point_A, point_B, point_C, point_D, point_A))
-	axes.plot(points[0], points[1])
+	drawSquare(axes)
 
 	animation = FuncAnimation(figure1, update_anim, np.linspace(0, time_A, time_A*100 + 1), init_anim, interval=10)
 
